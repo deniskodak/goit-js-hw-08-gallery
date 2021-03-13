@@ -39,7 +39,7 @@ ulRef.append(...createGalleryItems(images));
 ulRef.addEventListener('click', openModalWindow);
 function openModalWindow(e) {
     e.preventDefault();
-    console.dir(e.target);
+
     if (e.target.nodeName === 'IMG') {
         divModalRef.classList.add('is-open');
         imgRef.src = e.target.dataset.source;
@@ -64,14 +64,12 @@ function closeModalWindowByEsc(e) {
         closeModalWindow();
     }
 
+    if (divModalRef.classList.contains('is-open')) {
     if (e.code === 'ArrowLeft') {
-        if (divModalRef.classList.contains('is-open')) {
             ArrowLeft(images);
         }
-    }
 
-    if (e.code === 'ArrowRight') {
-        if (divModalRef.classList.contains('is-open')) {
+        if (e.code === 'ArrowRight') {
             ArrowRight(images);
         }
     }
