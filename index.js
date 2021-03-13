@@ -19,13 +19,13 @@ function createGalleryItems(elements) {
         aRef.classList.add('gallery__link');
         aRef.setAttribute('href', original);
 
-        const imgRef = document.createElement('img');
-        imgRef.classList.add('gallery__image');
-        imgRef.setAttribute('src', preview);
-        imgRef.setAttribute('data-source', original);
-        imgRef.setAttribute('alt', description);
+        const imgSmallRef = document.createElement('img');
+        imgSmallRef.classList.add('gallery__image');
+        imgSmallRef.setAttribute('src', preview);
+        imgSmallRef.setAttribute('data-source', original);
+        imgSmallRef.setAttribute('alt', description);
 
-        aRef.appendChild(imgRef);
+        aRef.appendChild(imgSmallRef);
         liRef.appendChild(aRef);
 
         return liRef;
@@ -39,10 +39,13 @@ ulRef.append(...createGalleryItems(images));
 ulRef.addEventListener('click', openModalWindow);
 function openModalWindow(e) {
     e.preventDefault();
-
-    divModalRef.classList.add('is-open');
-    imgRef.src = e.target.dataset.source;
-    imgRef.alt = e.target.alt;
+    console.dir(e.target);
+    if (e.target.nodeName === 'IMG') {
+        divModalRef.classList.add('is-open');
+        imgRef.src = e.target.dataset.source;
+        imgRef.alt = e.target.alt;  
+    }
+    
 }
 
 // Закрытие модалки кликом по бэкдропу и кнопке
@@ -62,16 +65,19 @@ function closeModalWindowByEsc(e) {
     }
 
     if (e.code === 'ArrowLeft') {
-         ArrowLeft(images);
+        if (divModalRef.classList.contains('is-open')) {
+            ArrowLeft(images);
+        }
     }
 
     if (e.code === 'ArrowRight') {
-         ArrowRight(images);
+        if (divModalRef.classList.contains('is-open')) {
+            ArrowRight(images);
+        }
     }
 }
     
-function ArrowLeft(array) {
-    if (divModalRef.classList.contains('is-open')) {
+function ArrowLeft(array, symbol) {
         for (let i = 0; i < array.length; i += 1) {
             if (array[i].original === imgRef.src && i !== 0) {
                 imgRef.src = array[i - 1].original;
@@ -79,10 +85,8 @@ function ArrowLeft(array) {
                 return imgRef;
             }
         }
-    }
 }
 function ArrowRight(array) {
-    if (divModalRef.classList.contains('is-open')) {
         for (let i = 0; i < array.length; i += 1) {
             if (array[i].original === imgRef.src && i !== array.length - 1) {
                 imgRef.src = array[i + 1].original;
@@ -90,5 +94,4 @@ function ArrowRight(array) {
                 return imgRef;
             }
         }
-    }
 }
