@@ -45,11 +45,19 @@ function openModalWindow(e) {
         imgRef.src = e.target.dataset.source;
         imgRef.alt = e.target.alt;  
     }
-    
+
+    // Закрытие модалки клавишей Escape и слайдер
+    if (divModalRef.classList.contains('is-open')) {
+        window.addEventListener('keydown', closeModalWindowByEsc);
+        divModalRef.addEventListener('click', closeModalWindow);
+    }
+    else {
+        window.removeEventListener('keydown', closeModalWindowByEsc);
+        divModalRef.removeEventListener('click', closeModalWindow);
+    }
 }
 
 // Закрытие модалки кликом по бэкдропу и кнопке
-divModalRef.addEventListener('click', closeModalWindow);
 function closeModalWindow(e) {
     divModalRef.classList.remove('is-open');
 
@@ -58,24 +66,20 @@ function closeModalWindow(e) {
 }
 
 // Закрытие модалки клавишей Escape и слайдер
-window.addEventListener('keydown', closeModalWindowByEsc);
 function closeModalWindowByEsc(e) {
     if (e.code === 'Escape') {
         closeModalWindow();
     }
-
-    if (divModalRef.classList.contains('is-open')) {
     if (e.code === 'ArrowLeft') {
             ArrowLeft(images);
-        }
+    }
 
-        if (e.code === 'ArrowRight') {
+    if (e.code === 'ArrowRight') {
             ArrowRight(images);
-        }
     }
 }
     
-function ArrowLeft(array, symbol) {
+function ArrowLeft(array) {
         for (let i = 0; i < array.length; i += 1) {
             if (array[i].original === imgRef.src && i !== 0) {
                 imgRef.src = array[i - 1].original;
